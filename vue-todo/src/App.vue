@@ -18,6 +18,7 @@
           :index="index"
           :todoItem="todoItem"
           @remove="removeItem"
+          @toggle="toggleComplete"
         ></TodoListItem>
       </ol>
     </div>
@@ -42,12 +43,17 @@ const storage = {
   },
 };
 
+export interface Todo {
+  title: string;
+  done: boolean;
+}
+
 export default Vue.extend({
   components: { TodoInput, TodoListItem },
   data() {
     return {
       todoText: "",
-      todoItems: [] as any[],
+      todoItems: [] as Todo[],
     };
   },
   methods: {
@@ -56,9 +62,12 @@ export default Vue.extend({
     },
     addTodo() {
       const value = this.todoText;
-      this.todoItems.push(value);
+      const todo: Todo = {
+        title: value,
+        done: false,
+      };
+      this.todoItems.push(todo);
       storage.save(this.todoItems);
-      // localStorage.setItem(value, value);
       this.initTodoText();
     },
     initTodoText() {
@@ -70,6 +79,13 @@ export default Vue.extend({
     removeItem(index: number) {
       console.log("delete", index);
       this.todoItems.splice(index, 1);
+      storage.save(this.todoItems);
+    },
+    toggleComplete(todoItem: Todo, index: number) {
+      this.todoItems.splice(index, 1, {
+        ...todoItem,
+        done: !todoItem.done,
+      });
       storage.save(this.todoItems);
     },
   },
