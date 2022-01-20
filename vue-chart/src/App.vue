@@ -6,12 +6,11 @@
 
 <script lang="ts">
 import Vue from "vue";
-import Chart from "chart.js/auto";
 
 export default Vue.extend({
   mounted() {
-    const ctx = document.getElementById("myChart");
-    const myChart = new Chart(ctx, {
+    const ctx = document.getElementById("myChart") as HTMLCanvasElement;
+    const myChart = new this.$_Chart(ctx, {
       type: "bar",
       data: {
         labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
