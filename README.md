@@ -1,1 +1,1 @@
-# learn-vue-typescript
+# learn-typescript
